@@ -5,6 +5,11 @@ import db.CandidateDAO;
 import db.VoterDAO;
 import java.util.List;
 
+/**
+ * Service layer for admin operations.
+ * Provides high-level business logic by orchestrating DAO calls.
+ * Separates business rules from database access.
+ */
 public class AdminService {
     private AdminDAO adminDAO = new AdminDAO();
     private CandidateDAO candidateDAO = new CandidateDAO();
