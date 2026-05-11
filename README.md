@@ -12,8 +12,12 @@ VoteWise implements a three-layer architecture:
 ## Features
 
 - **Admin Portal**: Add/delete candidates, view real-time voting results and registered voters
-- **Voter Portal**: Cast votes with candidate selection and confirmation
+- **Voter Portal**: Cast votes with candidate + election symbol selection (no party concept)
+- **LPU-only Registration**: Accepts only `@lpu.in` email IDs
+- **OTP Verification**: Registration requires OTP verification by real email delivery over SMTP
+- **Extended Profile**: Voter registration captures name, email, course, and section
 - **Security**: Transaction-based voting to prevent duplicate votes and ensure data integrity
+- **Password Security**: PBKDF2 hashed password storage for voters and admins (with automatic migration from old plain-text records at successful login)
 - **Database**: MySQL backend with proper schema and constraints
 
 ## Architecture
@@ -55,14 +59,35 @@ private static final String USER = "root";
 private static final String PASSWORD = "your_password";
 ```
 
-### 3. Compile Project
+### 3. Configure SMTP for OTP Email
+Set environment variables before running the app:
+
 ```powershell
-javac -d out -cp "lib\mysql-connector-j-9.6.0.jar" db/*.java gui/*.java logic/*.java
+$env:SMTP_HOST = "smtp.gmail.com"
+$env:SMTP_PORT = "587"
+$env:SMTP_USER = "your_email@gmail.com"
+$env:SMTP_PASS = "your_app_password"
+$env:SMTP_FROM = "your_email@gmail.com"
 ```
 
-### 4. Run Application
+Notes:
+- For Gmail, use an App Password (not your normal account password).
+- OTP emails are sent only to valid `@lpu.in` addresses.
+
+Alternative (recommended):
+- Login as admin and open `SMTP Settings` from the dashboard.
+- Use `Test SMTP` to verify credentials by sending a test mail before saving.
+- Save host/port/user/password/from once; app stores it in `config/smtp.properties`.
+- After this, OTP mail works without setting env variables each run.
+
+### 4. Compile Project
 ```powershell
-java -cp "out;lib\mysql-connector-j-9.6.0.jar" gui.LoginForm
+javac -d out -cp "lib/*" db/*.java gui/*.java logic/*.java
+```
+
+### 5. Run Application
+```powershell
+java -cp "out;lib/*" gui.LoginForm
 ```
 
 ## Default Credentials
@@ -72,7 +97,8 @@ java -cp "out;lib\mysql-connector-j-9.6.0.jar" gui.LoginForm
 - Password: `admin123`
 
 **Voter Registration:**
-- Open RegisterForm and create a new voter account
+- Open RegisterForm and create a new voter account with LPU email, course, and section
+- Verify registration through OTP (shown in app dialog in demo mode)
 
 ## File Structure
 

@@ -3,6 +3,7 @@ package gui;
 import db.CandidateDAO;
 import db.VoteDAO;
 import logic.Candidate;
+import db.ElectionDAO;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -15,19 +16,27 @@ public class VotingForm extends JFrame {
     
     private CandidateDAO candidateDAO = new CandidateDAO();
     private VoteDAO voteDAO = new VoteDAO();
+    private ElectionDAO electionDAO = new ElectionDAO();
 
     public VotingForm(int voterId) {
         this.voterId = voterId;
         setTitle("VoteWise - Cast Your Vote");
-        setSize(650, 350);
+        setSize(650, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
         setLocationRelativeTo(null);
 
-        JLabel title = new JLabel("Select a Candidate to Vote", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 18));
-        title.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 0));
-        add(title, BorderLayout.NORTH);
+        ElectionDAO.ElectionInfo electionInfo = electionDAO.getElectionInfo();
+
+        JPanel topPanel = new JPanel(new GridLayout(2, 1, 5, 5));
+        topPanel.setBorder(BorderFactory.createEmptyBorder(15, 10, 10, 10));
+        JLabel electionLabel = new JLabel("Election: " + electionInfo.name + " - " + electionInfo.post, SwingConstants.CENTER);
+        electionLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        JLabel instructionLabel = new JLabel("Select a Candidate to Vote", SwingConstants.CENTER);
+        instructionLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        topPanel.add(electionLabel);
+        topPanel.add(instructionLabel);
+        add(topPanel, BorderLayout.NORTH);
         
         // Center panel with candidate buttons
         JPanel centerPanel = new JPanel();
@@ -36,14 +45,14 @@ public class VotingForm extends JFrame {
         
         List<Candidate> candidates = candidateDAO.getAllCandidates();
         for (Candidate c : candidates) {
-            JButton btn = new JButton(c.getName() + "\n" + c.getParty());
+            JButton btn = new JButton("<html><center>" + c.getName() + "<br/>" + c.getSymbol() + "</center></html>");
             btn.setFont(new Font("Arial", Font.PLAIN, 12));
             btn.setPreferredSize(new Dimension(120, 80));
             int candId = c.getId();
             
             btn.addActionListener(e -> {
                 selectedId = candId;
-                selectedLabel.setText("Selected: " + c.getName() + " (" + c.getParty() + ")");
+                selectedLabel.setText("Selected: " + c.getName() + " (Symbol: " + c.getSymbol() + ")");
             });
             centerPanel.add(btn);
         }

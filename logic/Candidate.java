@@ -7,20 +7,20 @@ package logic;
 public class Candidate {
     private int id;          // Unique identifier from database
     private String name;      // Candidate's full name
-    private String party;     // Political party affiliation
+    private String symbol;     // Election symbol
 
-    public Candidate(int id, String name, String party) {
+    public Candidate(int id, String name, String symbol) {
         this.id = id;
         this.name = name;
-        this.party = party;
+        this.symbol = symbol;
     }
 
     public int getId() { return id; }
     public String getName() { return name; }
-    public String getParty() { return party; }
+    public String getSymbol() { return symbol; }
 
     @Override
     public String toString() {
-        return name + " - " + party;
+        return name + " - " + symbol;
     }
 }

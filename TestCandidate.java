@@ -13,11 +13,11 @@ public class TestCandidate {
      */
     @Test
     public void testCandidateCreation() {
-        Candidate candidate = new Candidate(1, "Alice Smith", "Alpha Party");
+        Candidate candidate = new Candidate(1, "Alice Smith", "Book");
         
         assertEquals(1, candidate.getId());
         assertEquals("Alice Smith", candidate.getName());
-        assertEquals("Alpha Party", candidate.getParty());
+        assertEquals("Book", candidate.getSymbol());
     }
 
     /**
@@ -25,8 +25,8 @@ public class TestCandidate {
      */
     @Test
     public void testCandidateToString() {
-        Candidate candidate = new Candidate(2, "Bob Jones", "Beta Party");
-        String expected = "Bob Jones - Beta Party";
+        Candidate candidate = new Candidate(2, "Bob Jones", "Pen");
+        String expected = "Bob Jones - Pen";
         
         assertEquals(expected, candidate.toString());
     }
@@ -36,8 +36,8 @@ public class TestCandidate {
      */
     @Test
     public void testCandidateImmutability() {
-        Candidate candidate1 = new Candidate(1, "Alice", "Party A");
-        Candidate candidate2 = new Candidate(1, "Alice", "Party A");
+        Candidate candidate1 = new Candidate(1, "Alice", "Book");
+        Candidate candidate2 = new Candidate(1, "Alice", "Book");
         
         // Both candidates have same data but are different objects
         assertNotSame(candidate1, candidate2);
@@ -49,8 +49,8 @@ public class TestCandidate {
      */
     @Test
     public void testMultipleCandidates() {
-        Candidate candidate1 = new Candidate(1, "Candidate 1", "Party 1");
-        Candidate candidate2 = new Candidate(2, "Candidate 2", "Party 2");
+        Candidate candidate1 = new Candidate(1, "Candidate 1", "Tree");
+        Candidate candidate2 = new Candidate(2, "Candidate 2", "Clock");
         
         assertNotEquals(candidate1.getId(), candidate2.getId());
         assertNotEquals(candidate1.getName(), candidate2.getName());
