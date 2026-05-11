@@ -2,6 +2,16 @@
 
 A Java-based desktop application for conducting secure online elections with an admin portal and voter interface.
 
+## ⚠️ SECURITY ALERT
+
+**DO NOT commit SMTP credentials or sensitive config files to GitHub.**
+
+- ✅ `config/smtp.properties` is excluded via `.gitignore`
+- ✅ Never add credentials to version control
+- ✅ Use environment variables or admin UI to configure SMTP
+
+**See [SECURITY.md](SECURITY.md) for critical credential rotation and setup guidelines.**
+
 ## Project Overview
 
 VoteWise implements a three-layer architecture:
@@ -60,7 +70,10 @@ private static final String PASSWORD = "your_password";
 ```
 
 ### 3. Configure SMTP for OTP Email
-Set environment variables before running the app:
+
+**⚠️ CRITICAL**: Never store real credentials in `config/smtp.properties` or commit them to git.
+
+#### Recommended: Use Environment Variables
 
 ```powershell
 $env:SMTP_HOST = "smtp.gmail.com"
@@ -70,14 +83,23 @@ $env:SMTP_PASS = "your_app_password"
 $env:SMTP_FROM = "your_email@gmail.com"
 ```
 
-Notes:
-- For Gmail, use an App Password (not your normal account password).
-- OTP emails are sent only to valid `@lpu.in` addresses.
+For Gmail:
+- Use an **App Password** (not your normal account password)
+- Enable 2-Step Verification on your Google account
+- Generate app password at: https://myaccount.google.com/apppasswords
+- OTP emails are sent only to valid `@lpu.in` addresses
 
-Alternative (recommended):
-- Login as admin and open `SMTP Settings` from the dashboard.
-- Use `Test SMTP` to verify credentials by sending a test mail before saving.
-- Save host/port/user/password/from once; app stores it in `config/smtp.properties`.
+#### Alternative: Admin Dashboard Configuration
+
+1. Launch VoteWise app
+2. Admin Portal → SMTP Settings
+3. Enter host, port, user, password, from email
+4. Click **Test SMTP** to verify
+5. Save (stores locally in `config/smtp.properties` - not committed)
+
+**For Production**: See [SECURITY.md](SECURITY.md) for enterprise credential management.
+
+**OTP Email Delivery**: Emails require successful SMTP authentication over TLS 1.2.
 - After this, OTP mail works without setting env variables each run.
 
 ### 4. Compile Project

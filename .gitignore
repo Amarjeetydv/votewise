@@ -22,3 +22,12 @@ target/
 # Temporary files
 *.log
 *.tmp
+
+# Configuration files with sensitive credentials
+config/smtp.properties
+config/*.properties
+.env
+.env.local
+*.key
+*.pem
+secrets/
